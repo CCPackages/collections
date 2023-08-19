@@ -1,0 +1,1241 @@
+DIM{
+  {
+    f = {},
+    F = {},
+  },
+  {
+    f = {
+      [ "bigfont.lua" ] = {
+        "-------------------------------------------------------------------------------------\r\
+-- Wojbies API 5.0 - Bigfont - functions to write bigger font using drawing sybols --\r\
+-------------------------------------------------------------------------------------\r\
+--   Copyright (c) 2015-2022 Wojbie (wojbie@wojbie.net)\r\
+--   Redistribution and use in source and binary forms, with or without modification, are permitted (subject to the limitations in the disclaimer below) provided that the following conditions are met:\r\
+--   1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\r\
+--   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\r\
+--   3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\r\
+--   4. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.\r\
+--   5. The origin of this software must not be misrepresented; you must not claim that you wrote the original software.\r\
+--   NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. YOU ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR INTENDED FOR USE IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR FACILITY.\r\
+\r\
+--Switch to true to replace generic currency sign \"\\164\" with krist symbol.\r\
+local krist = false\r\
+\r\
+--### Initializing\r\
+local b = shell and {} or (_ENV or getfenv())\r\
+b.versionName = \"Bigfont By Wojbie\"\r\
+b.versionNum = 5.003 --2021-07-21\r\
+b.doc = {}\r\
+\r\
+local expect, field if require then expect, field = require \"cc.expect\".expect, require \"cc.expect\".field else local ok, did = pcall(dofile,\"rom/modules/main/cc/expect.lua\") if ok then field, expect = did.field, did.expect else field, expect = function() end, function() end end end\r\
+\r\
+--### Font database\r\
+local rawFont = {{\"\\32\\32\\32\\137\\156\\148\\158\\159\\148\\135\\135\\144\\159\\139\\32\\136\\157\\32\\159\\139\\32\\32\\143\\32\\32\\143\\32\\32\\32\\32\\32\\32\\32\\32\\147\\148\\150\\131\\148\\32\\32\\32\\151\\140\\148\\151\\140\\147\", \"\\32\\32\\32\\149\\132\\149\\136\\156\\149\\144\\32\\133\\139\\159\\129\\143\\159\\133\\143\\159\\133\\138\\32\\133\\138\\32\\133\\32\\32\\32\\32\\32\\32\\150\\150\\129\\137\\156\\129\\32\\32\\32\\133\\131\\129\\133\\131\\132\", \"\\32\\32\\32\\130\\131\\32\\130\\131\\32\\32\\129\\32\\32\\32\\32\\130\\131\\32\\130\\131\\32\\32\\32\\32\\143\\143\\143\\32\\32\\32\\32\\32\\32\\130\\129\\32\\130\\135\\32\\32\\32\\32\\131\\32\\32\\131\\32\\131\", \"\\139\\144\\32\\32\\143\\148\\135\\130\\144\\149\\32\\149\\150\\151\\149\\158\\140\\129\\32\\32\\32\\135\\130\\144\\135\\130\\144\\32\\149\\32\\32\\139\\32\\159\\148\\32\\32\\32\\32\\159\\32\\144\\32\\148\\32\\147\\131\\132\", \"\\159\\135\\129\\131\\143\\149\\143\\138\\144\\138\\32\\133\\130\\149\\149\\137\\155\\149\\159\\143\\144\\147\\130\\132\\32\\149\\32\\147\\130\\132\\131\\159\\129\\139\\151\\129\\148\\32\\32\\139\\131\\135\\133\\32\\144\\130\\151\\32\", \"\\32\\32\\32\\32\\32\\32\\130\\135\\32\\130\\32\\129\\32\\129\\129\\131\\131\\32\\130\\131\\129\\140\\141\\132\\32\\129\\32\\32\\129\\32\\32\\32\\32\\32\\32\\32\\131\\131\\129\\32\\32\\32\\32\\32\\32\\32\\32\\32\", \"\\32\\32\\32\\32\\149\\32\\159\\154\\133\\133\\133\\144\\152\\141\\132\\133\\151\\129\\136\\153\\32\\32\\154\\32\\159\\134\\129\\130\\137\\144\\159\\32\\144\\32\\148\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\151\\129\", \"\\32\\32\\32\\32\\133\\32\\32\\32\\32\\145\\145\\132\\141\\140\\132\\151\\129\\144\\150\\146\\129\\32\\32\\32\\138\\144\\32\\32\\159\\133\\136\\131\\132\\131\\151\\129\\32\\144\\32\\131\\131\\129\\32\\144\\32\\151\\129\\32\", \"\\32\\32\\32\\32\\129\\32\\32\\32\\32\\130\\130\\32\\32\\129\\32\\129\\32\\129\\130\\129\\129\\32\\32\\32\\32\\130\\129\\130\\129\\32\\32\\32\\32\\32\\32\\32\\32\\133\\32\\32\\32\\32\\32\\129\\32\\129\\32\\32\", \"\\150\\156\\148\\136\\149\\32\\134\\131\\148\\134\\131\\148\\159\\134\\149\\136\\140\\129\\152\\131\\32\\135\\131\\149\\150\\131\\148\\150\\131\\148\\32\\148\\32\\32\\148\\32\\32\\152\\129\\143\\143\\144\\130\\155\\32\\134\\131\\148\", \"\\157\\129\\149\\32\\149\\32\\152\\131\\144\\144\\131\\148\\141\\140\\149\\144\\32\\149\\151\\131\\148\\32\\150\\32\\150\\131\\148\\130\\156\\133\\32\\144\\32\\32\\144\\32\\130\\155\\32\\143\\143\\144\\32\\152\\129\\32\\134\\32\", \"\\130\\131\\32\\131\\131\\129\\131\\131\\129\\130\\131\\32\\32\\32\\129\\130\\131\\32\\130\\131\\32\\32\\129\\32\\130\\131\\32\\130\\129\\32\\32\\129\\32\\32\\133\\32\\32\\32\\129\\32\\32\\32\\130\\32\\32\\32\\129\\32\", \"\\150\\140\\150\\137\\140\\148\\136\\140\\132\\150\\131\\132\\151\\131\\148\\136\\147\\129\\136\\147\\129\\150\\156\\145\\138\\143\\149\\130\\151\\32\\32\\32\\149\\138\\152\\129\\149\\32\\32\\157\\152\\149\\157\\144\\149\\150\\131\\148\", \"\\149\\143\\142\\149\\32\\149\\149\\32\\149\\149\\32\\144\\149\\32\\149\\149\\32\\32\\149\\32\\32\\149\\32\\149\\149\\32\\149\\32\\149\\32\\144\\32\\149\\149\\130\\148\\149\\32\\32\\149\\32\\149\\149\\130\\149\\149\\32\\149\", \"\\130\\131\\129\\129\\32\\129\\131\\131\\32\\130\\131\\32\\131\\131\\32\\131\\131\\129\\129\\32\\32\\130\\131\\32\\129\\32\\129\\130\\131\\32\\130\\131\\32\\129\\32\\129\\131\\131\\129\\129\\32\\129\\129\\32\\129\\130\\131\\32\", \"\\136\\140\\132\\150\\131\\148\\136\\140\\132\\153\\140\\129\\131\\151\\129\\149\\32\\149\\149\\32\\149\\149\\32\\149\\137\\152\\129\\137\\152\\129\\131\\156\\133\\149\\131\\32\\150\\32\\32\\130\\148\\32\\152\\137\\144\\32\\32\\32\", \"\\149\\32\\32\\149\\159\\133\\149\\32\\149\\144\\32\\149\\32\\149\\32\\149\\32\\149\\150\\151\\129\\138\\155\\149\\150\\130\\148\\32\\149\\32\\152\\129\\32\\149\\32\\32\\32\\150\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\", \"\\129\\32\\32\\130\\129\\129\\129\\32\\129\\130\\131\\32\\32\\129\\32\\130\\131\\32\\32\\129\\32\\129\\32\\129\\129\\32\\129\\32\\129\\32\\131\\131\\129\\130\\131\\32\\32\\32\\129\\130\\131\\32\\32\\32\\32\\140\\140\\132\", \"\\32\\154\\32\\159\\143\\32\\149\\143\\32\\159\\143\\32\\159\\144\\149\\159\\143\\32\\159\\137\\145\\159\\143\\144\\149\\143\\32\\32\\145\\32\\32\\32\\145\\149\\32\\144\\32\\149\\32\\143\\159\\32\\143\\143\\32\\159\\143\\32\", \"\\32\\32\\32\\152\\140\\149\\151\\32\\149\\149\\32\\145\\149\\130\\149\\157\\140\\133\\32\\149\\32\\154\\143\\149\\151\\32\\149\\32\\149\\32\\144\\32\\149\\149\\153\\32\\32\\149\\32\\149\\133\\149\\149\\32\\149\\149\\32\\149\", \"\\32\\32\\32\\130\\131\\129\\131\\131\\32\\130\\131\\32\\130\\131\\129\\130\\131\\129\\32\\129\\32\\140\\140\\129\\129\\32\\129\\32\\129\\32\\137\\140\\129\\130\\32\\129\\32\\130\\32\\129\\32\\129\\129\\32\\129\\130\\131\\32\", \"\\144\\143\\32\\159\\144\\144\\144\\143\\32\\159\\143\\144\\159\\138\\32\\144\\32\\144\\144\\32\\144\\144\\32\\144\\144\\32\\144\\144\\32\\144\\143\\143\\144\\32\\150\\129\\32\\149\\32\\130\\150\\32\\134\\137\\134\\134\\131\\148\", \"\\136\\143\\133\\154\\141\\149\\151\\32\\129\\137\\140\\144\\32\\149\\32\\149\\32\\149\\154\\159\\133\\149\\148\\149\\157\\153\\32\\154\\143\\149\\159\\134\\32\\130\\148\\32\\32\\149\\32\\32\\151\\129\\32\\32\\32\\32\\134\\32\", \"\\133\\32\\32\\32\\32\\133\\129\\32\\32\\131\\131\\32\\32\\130\\32\\130\\131\\129\\32\\129\\32\\130\\131\\129\\129\\32\\129\\140\\140\\129\\131\\131\\129\\32\\130\\129\\32\\129\\32\\130\\129\\32\\32\\32\\32\\32\\129\\32\", \"\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\", \"\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\", \"\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\", \"\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\", \"\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\\32\", \"\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\", \"\\32\\32\\32\\32\\145\\32\\159\\139\\32\\151\\131\\132\\155\\143\\132\\134\\135\\145\\32\\149\\32\\158\\140\\129\\130\\130\\32\\152\\147\\155\\157\\134\\32\\32\\144\\144\\32\\32\\32\\32\\32\\32\\152\\131\\155\\131\\131\\129\", \"\\32\\32\\32\\32\\149\\32\\149\\32\\145\\148\\131\\32\\149\\32\\149\\140\\157\\132\\32\\148\\32\\137\\155\\149\\32\\32\\32\\149\\154\\149\\137\\142\\32\\153\\153\\32\\131\\131\\149\\131\\131\\129\\149\\135\\145\\32\\32\\32\", \"\\32\\32\\32\\32\\129\\32\\130\\135\\32\\131\\131\\129\\134\\131\\132\\32\\129\\32\\32\\129\\32\\131\\131\\32\\32\\32\\32\\130\\131\\129\\32\\32\\32\\32\\129\\129\\32\\32\\32\\32\\32\\32\\130\\131\\129\\32\\32\\32\", \"\\150\\150\\32\\32\\148\\32\\134\\32\\32\\132\\32\\32\\134\\32\\32\\144\\32\\144\\150\\151\\149\\32\\32\\32\\32\\32\\32\\145\\32\\32\\152\\140\\144\\144\\144\\32\\133\\151\\129\\133\\151\\129\\132\\151\\129\\32\\145\\32\", \"\\130\\129\\32\\131\\151\\129\\141\\32\\32\\142\\32\\32\\32\\32\\32\\149\\32\\149\\130\\149\\149\\32\\143\\32\\32\\32\\32\\142\\132\\32\\154\\143\\133\\157\\153\\132\\151\\150\\148\\151\\158\\132\\151\\150\\148\\144\\130\\148\", \"\\32\\32\\32\\140\\140\\132\\32\\32\\32\\32\\32\\32\\32\\32\\32\\151\\131\\32\\32\\129\\129\\32\\32\\32\\32\\134\\32\\32\\32\\32\\32\\32\\32\\129\\129\\32\\129\\32\\129\\129\\130\\129\\129\\32\\129\\130\\131\\32\", \"\\156\\143\\32\\159\\141\\129\\153\\140\\132\\153\\137\\32\\157\\141\\32\\159\\142\\32\\150\\151\\129\\150\\131\\132\\140\\143\\144\\143\\141\\145\\137\\140\\148\\141\\141\\144\\157\\142\\32\\159\\140\\32\\151\\134\\32\\157\\141\\32\", \"\\157\\140\\149\\157\\140\\149\\157\\140\\149\\157\\140\\149\\157\\140\\149\\157\\140\\149\\151\\151\\32\\154\\143\\132\\157\\140\\32\\157\\140\\32\\157\\140\\32\\157\\140\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\", \"\\129\\32\\129\\129\\32\\129\\129\\32\\129\\129\\32\\129\\129\\32\\129\\129\\32\\129\\129\\131\\129\\32\\134\\32\\131\\131\\129\\131\\131\\129\\131\\131\\129\\131\\131\\129\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\", \"\\151\\131\\148\\152\\137\\145\\155\\140\\144\\152\\142\\145\\153\\140\\132\\153\\137\\32\\154\\142\\144\\155\\159\\132\\150\\156\\148\\147\\32\\144\\144\\130\\145\\136\\137\\32\\146\\130\\144\\144\\130\\145\\130\\136\\32\\151\\140\\132\", \"\\151\\32\\149\\151\\155\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\152\\137\\144\\157\\129\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\130\\150\\32\\32\\157\\129\\149\\32\\149\", \"\\131\\131\\32\\129\\32\\129\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\32\\32\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\32\\129\\32\\130\\131\\32\\133\\131\\32\", \"\\156\\143\\32\\159\\141\\129\\153\\140\\132\\153\\137\\32\\157\\141\\32\\159\\142\\32\\159\\159\\144\\152\\140\\144\\156\\143\\32\\159\\141\\129\\153\\140\\132\\157\\141\\32\\130\\145\\32\\32\\147\\32\\136\\153\\32\\130\\146\\32\", \"\\152\\140\\149\\152\\140\\149\\152\\140\\149\\152\\140\\149\\152\\140\\149\\152\\140\\149\\149\\157\\134\\154\\143\\132\\157\\140\\133\\157\\140\\133\\157\\140\\133\\157\\140\\133\\32\\149\\32\\32\\149\\32\\32\\149\\32\\32\\149\\32\", \"\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\130\\131\\32\\134\\32\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\131\\129\\32\\129\\32\\32\\129\\32\\32\\129\\32\\32\\129\\32\", \"\\159\\134\\144\\137\\137\\32\\156\\143\\32\\159\\141\\129\\153\\140\\132\\153\\137\\32\\157\\141\\32\\32\\132\\32\\159\\143\\32\\147\\32\\144\\144\\130\\145\\136\\137\\32\\146\\130\\144\\144\\130\\145\\130\\138\\32\\146\\130\\144\", \"\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\131\\147\\129\\138\\134\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\149\\32\\149\\154\\143\\149\\32\\157\\129\\154\\143\\149\", \"\\130\\131\\32\\129\\32\\129\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\130\\131\\32\\32\\32\\32\\130\\131\\32\\130\\131\\129\\130\\131\\129\\130\\131\\129\\130\\131\\129\\140\\140\\129\\130\\131\\32\\140\\140\\129\" }, {[[000110000110110000110010101000000010000000100101]], [[000000110110000000000010101000000010000000100101]], [[000000000000000000000000000000000000000000000000]], [[100010110100000010000110110000010100000100000110]], [[000000110000000010110110000110000000000000110000]], [[000000000000000000000000000000000000000000000000]], [[000000110110000010000000100000100000000000000010]], [[000000000110110100010000000010000000000000000100]], [[000000000000000000000000000000000000000000000000]], [[010000000000100110000000000000000000000110010000]], [[000000000000000000000000000010000000010110000000]], [[000000000000000000000000000000000000000000000000]], [[011110110000000100100010110000000100000000000000]], [[000000000000000000000000000000000000000000000000]], [[000000000000000000000000000000000000000000000000]], [[110000110110000000000000000000010100100010000000]], [[000010000000000000110110000000000100010010000000]], [[000000000000000000000000000000000000000000000000]], [[010110010110100110110110010000000100000110110110]], [[000000000000000000000110000000000110000000000000]], [[000000000000000000000000000000000000000000000000]], [[010100010110110000000000000000110000000010000000]], [[110110000000000000110000110110100000000010000000]], [[000000000000000000000000000000000000000000000000]], [[000100011111000100011111000100011111000100011111]], [[000000000000100100100100011011011011111111111111]], [[000000000000000000000000000000000000000000000000]], [[000100011111000100011111000100011111000100011111]], [[000000000000100100100100011011011011111111111111]], [[100100100100100100100100100100100100100100100100]], [[000000110100110110000010000011110000000000011000]], [[000000000100000000000010000011000110000000001000]], [[000000000000000000000000000000000000000000000000]], [[010000100100000000000000000100000000010010110000]], [[000000000000000000000000000000110110110110110000]], [[000000000000000000000000000000000000000000000000]], [[110110110110110110000000110110110110110110110110]], [[000000000000000000000110000000000000000000000000]], [[000000000000000000000000000000000000000000000000]], [[000000000000110110000110010000000000000000010010]], [[000010000000000000000000000000000000000000000000]], [[000000000000000000000000000000000000000000000000]], [[110110110110110110110000110110110110000000000000]], [[000000000000000000000110000000000000000000000000]], [[000000000000000000000000000000000000000000000000]], [[110110110110110110110000110000000000000000010000]], [[000000000000000000000000100000000000000110000110]], [[000000000000000000000000000000000000000000000000]] }}\r\
+\r\
+if krist then\r\
+    rawFont[1][31] = \"\\32\\32\\32\\32\\145\\32\\159\\139\\32\\151\\131\\132\\133\\135\\145\\134\\135\\145\\32\\149\\32\\158\\140\\129\\130\\130\\32\\152\\147\\155\\157\\134\\32\\32\\144\\144\\32\\32\\32\\32\\32\\32\\152\\131\\155\\131\\131\\129\"\r\
+    rawFont[1][32] = \"\\32\\32\\32\\32\\149\\32\\149\\32\\145\\148\\131\\32\\145\\146\\132\\140\\157\\132\\32\\148\\32\\137\\155\\149\\32\\32\\32\\149\\154\\149\\137\\142\\32\\153\\153\\32\\131\\131\\149\\131\\131\\129\\149\\135\\145\\32\\32\\32\"\r\
+    rawFont[1][33] = \"\\32\\32\\32\\32\\129\\32\\130\\135\\32\\131\\131\\129\\130\\128\\129\\32\\129\\32\\32\\129\\32\\131\\131\\32\\32\\32\\32\\130\\131\\129\\32\\32\\32\\32\\129\\129\\32\\32\\32\\32\\32\\32\\130\\131\\129\\32\\32\\32\"\r\
+    rawFont[2][32] = [[000000000100110000000010000011000110000000001000]]\r\
+end\r\
+--### Genarate fonts using 3x3 chars per a character. (1 character is 6x9 pixels)\r\
+local fonts = {}\r\
+local firstFont = {}\r\
+do\r\
+    local char = 0\r\
+    local height = #rawFont[1]\r\
+    local length = #rawFont[1][1]\r\
+    for i = 1, height, 3 do\r\
+        for j = 1, length, 3 do\r\
+            local thisChar = string.char(char)\r\
+\r\
+            local temp = {}\r\
+            temp[1] = rawFont[1][i]:sub(j, j + 2)\r\
+            temp[2] = rawFont[1][i + 1]:sub(j, j + 2)\r\
+            temp[3] = rawFont[1][i + 2]:sub(j, j + 2)\r\
+\r\
+            local temp2 = {}\r\
+            temp2[1] = rawFont[2][i]:sub(j, j + 2)\r\
+            temp2[2] = rawFont[2][i + 1]:sub(j, j + 2)\r\
+            temp2[3] = rawFont[2][i + 2]:sub(j, j + 2)\r\
+\r\
+            firstFont[thisChar] = {temp, temp2}\r\
+            char = char + 1\r\
+        end\r\
+    end\r\
+    fonts[1] = firstFont\r\
+end\r\
+\r\
+local function generateFontSize(size,yeld)\r\
+    local inverter = {[\"0\"] = \"1\", [\"1\"] = \"0\"} --:gsub(\"[01]\",inverter)\r\
+    if size<= #fonts then return true end\r\
+    for f = #fonts+1, size do\r\
+        --automagicly make bigger fonts using firstFont and fonts[f-1].\r\
+        local nextFont = {}\r\
+        local lastFont = fonts[f - 1]\r\
+        for char = 0, 255 do\r\
+            local thisChar = string.char(char)\r\
+            --sleep(0) print(f,thisChar)\r\
+\r\
+            local temp = {}\r\
+            local temp2 = {}\r\
+\r\
+            local templateChar = lastFont[thisChar][1]\r\
+            local templateBack = lastFont[thisChar][2]\r\
+            for i = 1, #templateChar do\r\
+                local line1, line2, line3, back1, back2, back3 = {}, {}, {}, {}, {}, {}\r\
+                for j = 1, #templateChar[1] do\r\
+                    local currentChar = firstFont[templateChar[i]:sub(j, j)][1]\r\
+                    table.insert(line1, currentChar[1])\r\
+                    table.insert(line2, currentChar[2])\r\
+                    table.insert(line3, currentChar[3])\r\
+\r\
+                    local currentBack = firstFont[templateChar[i]:sub(j, j)][2]\r\
+                    if templateBack[i]:sub(j, j) == \"1\" then\r\
+                        table.insert(back1, (currentBack[1]:gsub(\"[01]\", inverter)))\r\
+                        table.insert(back2, (currentBack[2]:gsub(\"[01]\", inverter)))\r\
+                        table.insert(back3, (currentBack[3]:gsub(\"[01]\", inverter)))\r\
+                    else\r\
+                        table.insert(back1, currentBack[1])\r\
+                        table.insert(back2, currentBack[2])\r\
+                        table.insert(back3, currentBack[3])\r\
+                    end\r\
+                end\r\
+                table.insert(temp, table.concat(line1))\r\
+                table.insert(temp, table.concat(line2))\r\
+                table.insert(temp, table.concat(line3))\r\
+                table.insert(temp2, table.concat(back1))\r\
+                table.insert(temp2, table.concat(back2))\r\
+                table.insert(temp2, table.concat(back3))\r\
+            end\r\
+\r\
+            nextFont[thisChar] = {temp, temp2}\r\
+            if yeld then yeld = \"Font\"..f..\"Yeld\"..char os.queueEvent(yeld) os.pullEvent(yeld) end\r\
+        end\r\
+        fonts[f] = nextFont\r\
+    end\r\
+    return true\r\
+end\r\
+\r\
+generateFontSize(3,false)\r\
+\r\
+--## Use pre-generated fonts instead of old code above.\r\
+\r\
+--local fonts = {}\r\
+\r\
+local tHex = {[ colors.white ] = \"0\", [ colors.orange ] = \"1\", [ colors.magenta ] = \"2\", [ colors.lightBlue ] = \"3\", [ colors.yellow ] = \"4\", [ colors.lime ] = \"5\", [ colors.pink ] = \"6\", [ colors.gray ] = \"7\", [ colors.lightGray ] = \"8\", [ colors.cyan ] = \"9\", [ colors.purple ] = \"a\", [ colors.blue ] = \"b\", [ colors.brown ] = \"c\", [ colors.green ] = \"d\", [ colors.red ] = \"e\", [ colors.black ] = \"f\"}\r\
+\r\
+--# Write data on terminal in specified location. Can scroll.\r\
+local function stamp(tTerminal, tData, nX, nY)\r\
+\r\
+    local oX, oY = tTerminal.getSize()\r\
+    local cX, cY = #tData[1][1], #tData[1]\r\
+    nX = nX or math.floor((oX - cX) / 2) + 1\r\
+    nY = nY or math.floor((oY - cY) / 2) + 1\r\
+\r\
+    for i = 1, cY do\r\
+        if i > 1 and nY + i - 1 > oY then term.scroll(1) nY = nY - 1 end\r\
+        tTerminal.setCursorPos(nX, nY + i - 1)\r\
+        tTerminal.blit(tData[1][i], tData[2][i], tData[3][i])\r\
+    end\r\
+end\r\
+\r\
+--# Write data on terminal in specified location. No scroll.\r\
+local function press(tTerminal, tData, nX, nY)\r\
+    local oX, oY = tTerminal.getSize()\r\
+    local cX, cY = #tData[1][1], #tData[1]\r\
+    nX = nX or math.floor((oX - cX) / 2) + 1\r\
+    nY = nY or math.floor((oY - cY) / 2) + 1\r\
+\r\
+    for i = 1, cY do\r\
+        tTerminal.setCursorPos(nX, nY + i - 1)\r\
+        tTerminal.blit(tData[1][i], tData[2][i], tData[3][i])\r\
+    end\r\
+end\r\
+\r\
+--# Generate data from strings for data and colors.\r\
+local function makeText(nSize, sString, nFC, nBC, bBlit)\r\
+    if not type(sString) == \"string\" then error(\"Not a String\",3) end --this should never happend with expects in place.\r\
+    local cFC = type(nFC) == \"string\" and nFC:sub(1, 1) or tHex[nFC] or error(\"Wrong Front Color\",3)\r\
+    local cBC = type(nBC) == \"string\" and nBC:sub(1, 1) or tHex[nBC] or error(\"Wrong Back Color\",3)\r\
+    local font = fonts[nSize] or error(\"Wrong font size selected\",3)\r\
+    if sString == \"\" then return {{\"\"}, {\"\"}, {\"\"}} end\r\
+    \r\
+    local input = {}\r\
+    for i in sString:gmatch('.') do table.insert(input, i) end\r\
+\r\
+    local tText = {}\r\
+    local height = #font[input[1]][1]\r\
+\r\
+\r\
+    for nLine = 1, height do\r\
+        local outLine = {}\r\
+        for i = 1, #input do\r\
+            outLine[i] = font[input[i]] and font[input[i]][1][nLine] or \"\"\r\
+        end\r\
+        tText[nLine] = table.concat(outLine)\r\
+    end\r\
+\r\
+    local tFront = {}\r\
+    local tBack = {}\r\
+    local tFrontSub = {[\"0\"] = cFC, [\"1\"] = cBC}\r\
+    local tBackSub = {[\"0\"] = cBC, [\"1\"] = cFC}\r\
+\r\
+    for nLine = 1, height do\r\
+        local front = {}\r\
+        local back = {}\r\
+        for i = 1, #input do\r\
+            local template = font[input[i]] and font[input[i]][2][nLine] or \"\"\r\
+            front[i] = template:gsub(\"[01]\", bBlit and {[\"0\"] = nFC:sub(i, i), [\"1\"] = nBC:sub(i, i)} or tFrontSub)\r\
+            back[i] = template:gsub(\"[01]\", bBlit and {[\"0\"] = nBC:sub(i, i), [\"1\"] = nFC:sub(i, i)} or tBackSub)\r\
+        end\r\
+        tFront[nLine] = table.concat(front)\r\
+        tBack[nLine] = table.concat(back)\r\
+    end\r\
+\r\
+    return {tText, tFront, tBack}\r\
+end\r\
+\r\
+--# Writing in big font using current terminal settings.\r\
+b.bigWrite = function(sString)\r\
+    expect(1, sString, \"string\")\r\
+    stamp(term, makeText(1, sString, term.getTextColor(), term.getBackgroundColor()), term.getCursorPos())\r\
+    local x, y = term.getCursorPos()\r\
+    term.setCursorPos(x, y - 2)\r\
+end\r\
+\r\
+b.bigBlit = function(sString, sFront, sBack)\r\
+    expect(1, sString, \"string\")\r\
+    expect(2, sFront, \"string\")\r\
+    expect(3, sBack, \"string\")\r\
+    if #sString ~= #sFront then error(\"Invalid length of text color string\",2) end\r\
+    if #sString ~= #sBack then error(\"Invalid length of background color string\",2) end\r\
+    stamp(term, makeText(1, sString, sFront, sBack, true), term.getCursorPos())\r\
+    local x, y = term.getCursorPos()\r\
+    term.setCursorPos(x, y - 2)\r\
+end\r\
+\r\
+b.bigPrint = function(sString)\r\
+    expect(1, sString, \"string\")\r\
+    stamp(term, makeText(1, sString, term.getTextColor(), term.getBackgroundColor()), term.getCursorPos())\r\
+    print()\r\
+end\r\
+\r\
+--# Writing in huge font using current terminal settings.\r\
+b.hugeWrite = function(sString)\r\
+    expect(1, sString, \"string\")\r\
+    stamp(term, makeText(2, sString, term.getTextColor(), term.getBackgroundColor()), term.getCursorPos())\r\
+    local x, y = term.getCursorPos()\r\
+    term.setCursorPos(x, y - 8)\r\
+end\r\
+\r\
+b.hugeBlit = function(sString, sFront, sBack)\r\
+    expect(1, sString, \"string\")\r\
+    expect(2, sFront, \"string\")\r\
+    expect(3, sBack, \"string\")\r\
+    if #sString ~= #sFront then error(\"Invalid length of text color string\",2) end\r\
+    if #sString ~= #sBack then error(\"Invalid length of background color string\",2) end\r\
+    stamp(term, makeText(2, sString, sFront, sBack, true), term.getCursorPos())\r\
+    local x, y = term.getCursorPos()\r\
+    term.setCursorPos(x, y - 8)\r\
+end\r\
+\r\
+b.hugePrint = function(sString)\r\
+    expect(1, sString, \"string\")\r\
+    stamp(term, makeText(2, sString, term.getTextColor(), term.getBackgroundColor()), term.getCursorPos())\r\
+    print()\r\
+end\r\
+\r\
+--# Write/blit string on terminal in specified location\r\
+b.doc.writeOn = [[writeOn(tTerminal, nSize, sString, [nX], [nY]) - Writes sString on tTerminal using current tTerminal colours. nX, nY are coordinates. If any of them are nil then text is centered in that axis using tTerminal size.]]\r\
+b.writeOn = function(tTerminal, nSize, sString, nX, nY)\r\
+    expect(1, tTerminal, \"table\")\r\
+    field(tTerminal, \"getSize\", \"function\")\r\
+    field(tTerminal, \"scroll\", \"function\")\r\
+    field(tTerminal, \"setCursorPos\", \"function\")\r\
+    field(tTerminal, \"blit\", \"function\")\r\
+    field(tTerminal, \"getTextColor\", \"function\")\r\
+    field(tTerminal, \"getBackgroundColor\", \"function\")\r\
+    expect(2, nSize, \"number\")\r\
+    expect(3, sString, \"string\")\r\
+    expect(4, nX, \"number\", \"nil\")\r\
+    expect(5, nY, \"number\", \"nil\")\r\
+    press(tTerminal, makeText(nSize, sString, tTerminal.getTextColor(), tTerminal.getBackgroundColor()), nX, nY)\r\
+end\r\
+\r\
+b.doc.blitOn = [[writeOn(tTerminal, nSize, sString, sFront, sBack, [nX], [nY]) - Blits sString on tTerminal with sFront and sBack colors . nX, nY are coordinates. If any of them are nil then text is centered in that axis using tTerminal size.]]\r\
+b.blitOn = function(tTerminal, nSize, sString, sFront, sBack, nX, nY)\r\
+    expect(1, tTerminal, \"table\")\r\
+    field(tTerminal, \"getSize\", \"function\")\r\
+    field(tTerminal, \"scroll\", \"function\")\r\
+    field(tTerminal, \"setCursorPos\", \"function\")\r\
+    field(tTerminal, \"blit\", \"function\")\r\
+    expect(2, nSize, \"number\")\r\
+    expect(3, sString, \"string\")\r\
+    expect(4, sFront, \"string\")\r\
+    expect(5, sBack, \"string\")\r\
+    if #sString ~= #sFront then error(\"Invalid length of text color string\",2) end\r\
+    if #sString ~= #sBack then error(\"Invalid length of background color string\",2) end\r\
+    expect(6, nX, \"number\", \"nil\")\r\
+    expect(7, nY, \"number\", \"nil\")\r\
+    press(tTerminal, makeText(nSize, sString, sFront, sBack, true), nX, nY)\r\
+end\r\
+\r\
+--# \r\
+b.doc.makeBlittleText = [[makeBlittleText(nSize, sString, nFC, nBC) - Generate blittle object in size nSize with text sString in blittle format for printing with that api. nFC and nBC are colors to generate the object with.]]\r\
+b.makeBlittleText = function(nSize, sString, nFC, nBC)\r\
+    expect(1, nSize, \"number\")\r\
+    expect(2, sString, \"string\")\r\
+    expect(3, nFC, \"number\")\r\
+    expect(4, nBC, \"number\")\r\
+    local out = makeText(nSize, sString, nFC, nBC)\r\
+    out.height = #out[1]\r\
+    out.width = #out[1][1]\r\
+    return out\r\
+end\r\
+\r\
+b.doc.generateFontSize = [[generateFontSize(size) - Generates bigger font sizes and enables then on other functions that accept size argument. By default bigfont loads sizes 1-3 as those can be generated without yielding. Using this user can generate sizes 4-6. Warning: This function will internally yield.]]\r\
+b.generateFontSize = function(size)\r\
+    expect(1, size, \"number\")\r\
+    if type(size) ~= \"number\" then error(\"Size needs to be a number\",2) end\r\
+    if size > 6 then return false end\r\
+    return generateFontSize(math.floor(size),true)\r\
+end\r\
+\r\
+--### Finalizing\r\
+return b",
+      },
+      [ "prime.lua" ] = {
+        "-- PrimeUI by JackMacWindows\
+-- Public domain/CC0\
+\
+local expect = require \"cc.expect\".expect\
+\
+-- Initialization code\
+local PrimeUI = {}\
+do\
+    local coros = {}\
+    local restoreCursor\
+\
+    --- Adds a task to run in the main loop.\
+    ---@param func function The function to run, usually an `os.pullEvent` loop\
+    function PrimeUI.addTask(func)\
+        expect(1, func, \"function\")\
+        local t = {coro = coroutine.create(func)}\
+        coros[#coros+1] = t\
+        _, t.filter = coroutine.resume(t.coro)\
+    end\
+\
+    --- Sends the provided arguments to the run loop, where they will be returned.\
+    ---@param ... any The parameters to send\
+    function PrimeUI.resolve(...)\
+        coroutine.yield(coros, ...)\
+    end\
+\
+    --- Clears the screen and resets all components. Do not use any previously\
+    --- created components after calling this function.\
+    function PrimeUI.clear()\
+        -- Reset the screen.\
+        term.setCursorPos(1, 1)\
+        term.setCursorBlink(false)\
+        term.setBackgroundColor(colors.black)\
+        term.setTextColor(colors.white)\
+        term.clear()\
+        -- Reset the task list and cursor restore function.\
+        coros = {}\
+        restoreCursor = nil\
+    end\
+\
+    --- Sets or clears the window that holds where the cursor should be.\
+    ---@param win window|nil The window to set as the active window\
+    function PrimeUI.setCursorWindow(win)\
+        expect(1, win, \"table\", \"nil\")\
+        restoreCursor = win and win.restoreCursor\
+    end\
+\
+    --- Gets the absolute position of a coordinate relative to a window.\
+    ---@param win window The window to check\
+    ---@param x number The relative X position of the point\
+    ---@param y number The relative Y position of the point\
+    ---@return number x The absolute X position of the window\
+    ---@return number y The absolute Y position of the window\
+    function PrimeUI.getWindowPos(win, x, y)\
+        if win == term then return x, y end\
+        while win ~= term.native() and win ~= term.current() do\
+            if not win.getPosition then return x, y end\
+            local wx, wy = win.getPosition()\
+            x, y = x + wx - 1, y + wy - 1\
+            _, win = debug.getupvalue(select(2, debug.getupvalue(win.isColor, 1)), 1) -- gets the parent window through an upvalue\
+        end\
+        return x, y\
+    end\
+\
+    --- Runs the main loop, returning information on an action.\
+    ---@return any ... The result of the coroutine that exited\
+    function PrimeUI.run()\
+        while true do\
+            -- Restore the cursor and wait for the next event.\
+            if restoreCursor then restoreCursor() end\
+            local ev = table.pack(os.pullEvent())\
+            -- Run all coroutines.\
+            for _, v in ipairs(coros) do\
+                if v.filter == nil or v.filter == ev[1] then\
+                    -- Resume the coroutine, passing the current event.\
+                    local res = table.pack(coroutine.resume(v.coro, table.unpack(ev, 1, ev.n)))\
+                    -- If the call failed, bail out. Coroutines should never exit.\
+                    if not res[1] then error(res[2], 2) end\
+                    -- If the coroutine resolved, return its values.\
+                    if res[2] == coros then return table.unpack(res, 3, res.n) end\
+                    -- Set the next event filter.\
+                    v.filter = res[2]\
+                end\
+            end\
+        end\
+    end\
+end\
+\
+\
+\
+--component 1, borderBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a thin border around a screen region.\
+---@param win window The window to draw on\
+---@param x number The X coordinate of the inside of the box\
+---@param y number The Y coordinate of the inside of the box\
+---@param width number The width of the inner box\
+---@param height number The height of the inner box\
+---@param fgColor color|nil The color of the border (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.borderBox(win, x, y, width, height, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, height, \"number\")\
+    fgColor = expect(6, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(7, bgColor, \"number\", \"nil\") or colors.black\
+    -- Draw the top-left corner & top border.\
+    win.setBackgroundColor(bgColor)\
+    win.setTextColor(fgColor)\
+    win.setCursorPos(x - 1, y - 1)\
+    win.write(\"\\x9C\" .. (\"\\x8C\"):rep(width))\
+    -- Draw the top-right corner.\
+    win.setBackgroundColor(fgColor)\
+    win.setTextColor(bgColor)\
+    win.write(\"\\x93\")\
+    -- Draw the right border.\
+    for i = 1, height do\
+        win.setCursorPos(win.getCursorPos() - 1, y + i - 1)\
+        win.write(\"\\x95\")\
+    end\
+    -- Draw the left border.\
+    win.setBackgroundColor(bgColor)\
+    win.setTextColor(fgColor)\
+    for i = 1, height do\
+        win.setCursorPos(x - 1, y + i - 1)\
+        win.write(\"\\x95\")\
+    end\
+    -- Draw the bottom border and corners.\
+    win.setCursorPos(x - 1, y + height)\
+    win.write(\"\\x8D\" .. (\"\\x8C\"):rep(width) .. \"\\x8E\")\
+end\
+\
+--component 2, button\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a clickable button on screen with text.\
+---@param win window The window to draw on\
+---@param x number The X position of the button\
+---@param y number The Y position of the button\
+---@param text string The text to draw on the button\
+---@param action function|string A function to call when clicked, or a string to send with a `run` event\
+---@param fgColor color|nil The color of the button text (defaults to white)\
+---@param bgColor color|nil The color of the button (defaults to light gray)\
+---@param clickedColor color|nil The color of the button when clicked (defaults to gray)\
+function PrimeUI.button(win, x, y, text, action, fgColor, bgColor, clickedColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, text, \"string\")\
+    expect(5, action, \"function\", \"string\")\
+    fgColor = expect(6, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(7, bgColor, \"number\", \"nil\") or colors.gray\
+    clickedColor = expect(8, clickedColor, \"number\", \"nil\") or colors.lightGray\
+    -- Draw the initial button.\
+    win.setCursorPos(x, y)\
+    win.setBackgroundColor(bgColor)\
+    win.setTextColor(fgColor)\
+    win.write(\" \" .. text .. \" \")\
+    -- Get the screen position and add a click handler.\
+    PrimeUI.addTask(function()\
+        local buttonDown = false\
+        while true do\
+            local event, button, clickX, clickY = os.pullEvent()\
+            local screenX, screenY = PrimeUI.getWindowPos(win, x, y)\
+            if event == \"mouse_click\" and button == 1 and clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then\
+                -- Initiate a click action (but don't trigger until mouse up).\
+                buttonDown = true\
+                -- Redraw the button with the clicked background color.\
+                win.setCursorPos(x, y)\
+                win.setBackgroundColor(clickedColor)\
+                win.setTextColor(fgColor)\
+                win.write(\" \" .. text .. \" \")\
+            elseif event == \"mouse_up\" and button == 1 and buttonDown then\
+                -- Finish a click event.\
+                if clickX >= screenX and clickX < screenX + #text + 2 and clickY == screenY then\
+                    -- Trigger the action.\
+                    if type(action) == \"string\" then PrimeUI.resolve(\"button\", action)\
+                    else action() end\
+                end\
+                -- Redraw the original button state.\
+                win.setCursorPos(x, y)\
+                win.setBackgroundColor(bgColor)\
+                win.setTextColor(fgColor)\
+                win.write(\" \" .. text .. \" \")\
+            end\
+        end\
+    end)\
+end\
+--component 3, centerLabel\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a line of text, centering it inside a box horizontally.\
+---@param win window The window to draw on\
+---@param x number The X position of the left side of the box\
+---@param y number The Y position of the box\
+---@param width number The width of the box to draw in\
+---@param text string The text to draw\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.centerLabel(win, x, y, width, text, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, text, \"string\")\
+    fgColor = expect(6, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(7, bgColor, \"number\", \"nil\") or colors.black\
+    assert(#text <= width, \"string is too long\")\
+    win.setCursorPos(x + math.floor((width - #text) / 2), y)\
+    win.setTextColor(fgColor)\
+    win.setBackgroundColor(bgColor)\
+    win.write(text)\
+end\
+--component 4, checkSelectionBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a list of entries with toggleable check boxes.\
+---@param win window The window to draw on\
+---@param x number The X coordinate of the inside of the box\
+---@param y number The Y coordinate of the inside of the box\
+---@param width number The width of the inner box\
+---@param height number The height of the inner box\
+---@param selections {string: string|boolean} A list of entries to show, where the value is whether the item is pre-selected (or `\"R\"` for required/forced selected)\
+---@param action function|string|nil A function or `run` event that's called when a selection is made\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.checkSelectionBox(win, x, y, width, height, selections, action, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, height, \"number\")\
+    expect(6, selections, \"table\")\
+    expect(7, action, \"function\", \"string\", \"nil\")\
+    fgColor = expect(8, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(9, bgColor, \"number\", \"nil\") or colors.black\
+    -- Calculate how many selections there are.\
+    local nsel = 0\
+    for _ in pairs(selections) do nsel = nsel + 1 end\
+    -- Create the outer display box.\
+    local outer = window.create(win, x, y, width, height)\
+    outer.setBackgroundColor(bgColor)\
+    outer.clear()\
+    -- Create the inner scroll box.\
+    local inner = window.create(outer, 1, 1, width - 1, nsel)\
+    inner.setBackgroundColor(bgColor)\
+    inner.setTextColor(fgColor)\
+    inner.clear()\
+    -- Draw each line in the window.\
+    local lines = {}\
+    local nl, selected = 1, 1\
+    for k, v in pairs(selections) do\
+        inner.setCursorPos(1, nl)\
+        inner.write((v and (v == \"R\" and \"[-] \" or \"[\\xD7] \") or \"[ ] \") .. k)\
+        lines[nl] = {k, not not v}\
+        nl = nl + 1\
+    end\
+    -- Draw a scroll arrow if there is scrolling.\
+    if nsel > height then\
+        outer.setCursorPos(width, height)\
+        outer.setBackgroundColor(bgColor)\
+        outer.setTextColor(fgColor)\
+        outer.write(\"\\31\")\
+    end\
+    -- Set cursor blink status.\
+    inner.setCursorPos(2, selected)\
+    inner.setCursorBlink(true)\
+    PrimeUI.setCursorWindow(inner)\
+    -- Get screen coordinates & add run task.\
+    local screenX, screenY = PrimeUI.getWindowPos(win, x, y)\
+    PrimeUI.addTask(function()\
+        local scrollPos = 1\
+        while true do\
+            -- Wait for an event.\
+            local ev = table.pack(os.pullEvent())\
+            -- Look for a scroll event or a selection event.\
+            local dir\
+            if ev[1] == \"key\" then\
+                if ev[2] == keys.up then dir = -1\
+                elseif ev[2] == keys.down then dir = 1\
+                elseif ev[2] == keys.space and selections[lines[selected][1]] ~= \"R\" then\
+                    -- (Un)select the item.\
+                    lines[selected][2] = not lines[selected][2]\
+                    inner.setCursorPos(2, selected)\
+                    inner.write(lines[selected][2] and \"\\xD7\" or \" \")\
+                    -- Call the action if passed; otherwise, set the original table.\
+                    if type(action) == \"string\" then PrimeUI.resolve(\"checkSelectionBox\", action, lines[selected][1], lines[selected][2])\
+                    elseif action then action(lines[selected][1], lines[selected][2])\
+                    else selections[lines[selected][1]] = lines[selected][2] end\
+                    -- Redraw all lines in case of changes.\
+                    for i, v in ipairs(lines) do\
+                        local vv = selections[v[1]] == \"R\" and \"R\" or v[2]\
+                        inner.setCursorPos(2, i)\
+                        inner.write((vv and (vv == \"R\" and \"-\" or \"\\xD7\") or \" \"))\
+                    end\
+                    inner.setCursorPos(2, selected)\
+                end\
+            elseif ev[1] == \"mouse_scroll\" and ev[3] >= screenX and ev[3] < screenX + width and ev[4] >= screenY and ev[4] < screenY + height then\
+                dir = ev[2]\
+            end\
+            -- Scroll the screen if required.\
+            if dir and (selected + dir >= 1 and selected + dir <= nsel) then\
+                selected = selected + dir\
+                if selected - scrollPos < 0 or selected - scrollPos >= height then\
+                    scrollPos = scrollPos + dir\
+                    inner.reposition(1, 2 - scrollPos)\
+                end\
+                inner.setCursorPos(2, selected)\
+            end\
+            -- Redraw scroll arrows and reset cursor.\
+            outer.setCursorPos(width, 1)\
+            outer.write(scrollPos > 1 and \"\\30\" or \" \")\
+            outer.setCursorPos(width, height)\
+            outer.write(scrollPos < nsel - height + 1 and \"\\31\" or \" \")\
+            inner.restoreCursor()\
+        end\
+    end)\
+end\
+--component 5, drawImage\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a BIMG-formatted image to the screen. This does not support transparency,\
+--- and does not handle animation on its own (but the index parameter may be\
+--- used by apps to implement animation).\
+---@param win window The window to draw on\
+---@param x number The X position of the top left corner of the image\
+---@param y number The Y position of the top left corner of the image\
+---@param data string|table The path to the image to load, or the image data itself\
+---@param index number|nil The index of the frame to draw (defaults to 1)\
+---@param setPalette boolean|nil Whether to set the palette if the image contains one (defaults to true)\
+function PrimeUI.drawImage(win, x, y, data, index, setPalette)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, data, \"string\", \"table\")\
+    index = expect(5, index, \"number\", \"nil\") or 1\
+    expect(6, setPalette, \"boolean\", \"nil\")\
+    if setPalette == nil then setPalette = true end\
+    -- Load the image file if a string was passed. (This consists of reading the file and unserializing.)\
+    if type(data) == \"string\" then\
+        local file = assert(fs.open(data, \"rb\"))\
+        local filedata = file.readAll()\
+        file.close()\
+        data = assert(textutils.unserialize(filedata), \"File is not a valid BIMG file\")\
+    end\
+    -- Blit each line to the screen.\
+    for line = 1, #data[index] do\
+        win.setCursorPos(x, y + line - 1)\
+        win.blit(table.unpack(data[index][line]))\
+    end\
+    -- Set the palette if one exists and is desired.\
+    local palette = data[index].palette or data.palette\
+    if setPalette and palette then\
+        for i = 0, #palette do\
+            win.setPaletteColor(2^i, table.unpack(palette[i]))\
+        end\
+    end\
+end\
+--component 6, drawText\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a block of text inside a window with word wrapping, optionally resizing the window to fit.\
+---@param win window The window to draw in\
+---@param text string The text to draw\
+---@param resizeToFit boolean|nil Whether to resize the window to fit the text (defaults to false). This is useful for scroll boxes.\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+---@return number lines The total number of lines drawn\
+function PrimeUI.drawText(win, text, resizeToFit, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, text, \"string\")\
+    expect(3, resizeToFit, \"boolean\", \"nil\")\
+    fgColor = expect(4, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(5, bgColor, \"number\", \"nil\") or colors.black\
+    -- Set colors.\
+    win.setBackgroundColor(bgColor)\
+    win.setTextColor(fgColor)\
+    -- Redirect to the window to use print on it.\
+    local old = term.redirect(win)\
+    -- Draw the text using print().\
+    local lines = print(text)\
+    -- Redirect back to the original terminal.\
+    term.redirect(old)\
+    -- Resize the window if desired.\
+    if resizeToFit then\
+        -- Get original parameters.\
+        local x, y = win.getPosition()\
+        local w = win.getSize()\
+        -- Resize the window.\
+        win.reposition(x, y, w, lines)\
+    end\
+    return lines\
+end\
+\
+--component 7, horizontalLine\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a horizontal line at a position with the specified width.\
+---@param win window The window to draw on\
+---@param x number The X position of the left side of the line\
+---@param y number The Y position of the line\
+---@param width number The width/length of the line\
+---@param fgColor color|nil The color of the line (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.horizontalLine(win, x, y, width, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    fgColor = expect(5, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(6, bgColor, \"number\", \"nil\") or colors.black\
+    -- Use drawing characters to draw a thin line.\
+    win.setCursorPos(x, y)\
+    win.setTextColor(fgColor)\
+    win.setBackgroundColor(bgColor)\
+    win.write((\"\\x8C\"):rep(width))\
+end\
+--component 8, inputBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a text input box.\
+---@param win window The window to draw on\
+---@param x number The X position of the left side of the box\
+---@param y number The Y position of the box\
+---@param width number The width/length of the box\
+---@param action function|string A function or `run` event to call when the enter key is pressed\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+---@param replacement string|nil A character to replace typed characters with\
+---@param history string[]|nil A list of previous entries to provide\
+---@param completion function|nil A function to call to provide completion\
+---@param default string|nil A string to return if the box is empty\
+function PrimeUI.inputBox(win, x, y, width, action, fgColor, bgColor, replacement, history, completion, default)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, action, \"function\", \"string\")\
+    fgColor = expect(6, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(7, bgColor, \"number\", \"nil\") or colors.black\
+    expect(8, replacement, \"string\", \"nil\")\
+    expect(9, history, \"table\", \"nil\")\
+    expect(10, completion, \"function\", \"nil\")\
+    expect(11, default, \"string\", \"nil\")\
+    -- Create a window to draw the input in.\
+    local box = window.create(win, x, y, width, 1)\
+    box.setTextColor(fgColor)\
+    box.setBackgroundColor(bgColor)\
+    box.clear()\
+    -- Call read() in a new coroutine.\
+    PrimeUI.addTask(function()\
+        -- We need a child coroutine to be able to redirect back to the window.\
+        local coro = coroutine.create(read)\
+        -- Run the function for the first time, redirecting to the window.\
+        local old = term.redirect(box)\
+        local ok, res = coroutine.resume(coro, replacement, history, completion, default)\
+        term.redirect(old)\
+        -- Run the coroutine until it finishes.\
+        while coroutine.status(coro) ~= \"dead\" do\
+            -- Get the next event.\
+            local ev = table.pack(os.pullEvent())\
+            -- Redirect and resume.\
+            old = term.redirect(box)\
+            ok, res = coroutine.resume(coro, table.unpack(ev, 1, ev.n))\
+            term.redirect(old)\
+            -- Pass any errors along.\
+            if not ok then error(res) end\
+        end\
+        -- Send the result to the receiver.\
+        if type(action) == \"string\" then PrimeUI.resolve(\"inputBox\", action, res)\
+        else action(res) end\
+        -- Spin forever, because tasks cannot exit.\
+        while true do os.pullEvent() end\
+    end)\
+end\
+--component 9, interval\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Runs a function or action repeatedly after a specified time period until canceled.\
+--- If a function is passed as an action, it may return a number to change the\
+--- period, or `false` to stop it.\
+---@param time number The amount of time to wait for each time, in seconds\
+---@param action function|string The function to call when the timer completes, or a `run` event to send\
+---@return function cancel A function to cancel the timer\
+function PrimeUI.interval(time, action)\
+    expect(1, time, \"number\")\
+    expect(2, action, \"function\", \"string\")\
+    -- Start the timer.\
+    local timer = os.startTimer(time)\
+    -- Add a task to wait for the timer.\
+    PrimeUI.addTask(function()\
+        while true do\
+            -- Wait for a timer event.\
+            local _, tm = os.pullEvent(\"timer\")\
+            if tm == timer then\
+                -- Fire the timer action.\
+                local res\
+                if type(action) == \"string\" then PrimeUI.resolve(\"timeout\", action)\
+                else res = action() end\
+                -- Check the return value and adjust time accordingly.\
+                if type(res) == \"number\" then time = res end\
+                -- Set a new timer if not canceled.\
+                if res ~= false then timer = os.startTimer(time) end\
+            end\
+        end\
+    end)\
+    -- Return a function to cancel the timer.\
+    return function() os.cancelTimer(timer) end\
+end\
+--component 10, keyAction\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Adds an action to trigger when a key is pressed.\
+---@param key key The key to trigger on, from `keys.*`\
+---@param action function|string A function to call when clicked, or a string to use as a key for a `run` return event\
+function PrimeUI.keyAction(key, action)\
+    expect(1, key, \"number\")\
+    expect(2, action, \"function\", \"string\")\
+    PrimeUI.addTask(function()\
+        while true do\
+            local _, param1 = os.pullEvent(\"key\") -- wait for key\
+            if param1 == key then\
+                if type(action) == \"string\" then PrimeUI.resolve(\"keyAction\", action)\
+                else action() end\
+            end\
+        end\
+    end)\
+end\
+\
+--component 11, keyCombo\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Adds an action to trigger when a key is pressed with modifier keys.\
+---@param key key The key to trigger on, from `keys.*`\
+---@param withCtrl boolean Whether Ctrl is required\
+---@param withAlt boolean Whether Alt is required\
+---@param withShift boolean Whether Shift is required\
+---@param action function|string A function to call when clicked, or a string to use as a key for a `run` return event\
+function PrimeUI.keyCombo(key, withCtrl, withAlt, withShift, action)\
+    expect(1, key, \"number\")\
+    expect(2, withCtrl, \"boolean\")\
+    expect(3, withAlt, \"boolean\")\
+    expect(4, withShift, \"boolean\")\
+    expect(5, action, \"function\", \"string\")\
+    PrimeUI.addTask(function()\
+        local heldCtrl, heldAlt, heldShift = false, false, false\
+        while true do\
+            local event, param1, param2 = os.pullEvent() -- wait for key\
+            if event == \"key\" then\
+                -- check if key is down, all modifiers are correct, and that it's not held\
+                if param1 == key and heldCtrl == withCtrl and heldAlt == withAlt and heldShift == withShift and not param2 then\
+                    if type(action) == \"string\" then PrimeUI.resolve(\"keyCombo\", action)\
+                    else action() end\
+                -- activate modifier keys\
+                elseif param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = true\
+                elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = true\
+                elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = true end\
+            elseif event == \"key_up\" then\
+                -- deactivate modifier keys\
+                if param1 == keys.leftCtrl or param1 == keys.rightCtrl then heldCtrl = false\
+                elseif param1 == keys.leftAlt or param1 == keys.rightAlt then heldAlt = false\
+                elseif param1 == keys.leftShift or param1 == keys.rightShift then heldShift = false end\
+            end\
+        end\
+    end)\
+end\
+\
+--component 12, label\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Draws a line of text at a position.\
+---@param win window The window to draw on\
+---@param x number The X position of the left side of the text\
+---@param y number The Y position of the text\
+---@param text string The text to draw\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.label(win, x, y, text, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, text, \"string\")\
+    fgColor = expect(5, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(6, bgColor, \"number\", \"nil\") or colors.black\
+    win.setCursorPos(x, y)\
+    win.setTextColor(fgColor)\
+    win.setBackgroundColor(bgColor)\
+    win.write(text)\
+end\
+--component 13, progressBar\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a progress bar, which can be updated by calling the returned function.\
+---@param win window The window to draw on\
+---@param x number The X position of the left side of the bar\
+---@param y number The Y position of the bar\
+---@param width number The width of the bar\
+---@param fgColor color|nil The color of the activated part of the bar (defaults to white)\
+---@param bgColor color|nil The color of the inactive part of the bar (defaults to black)\
+---@param useShade boolean|nil Whether to use shaded areas for the inactive part (defaults to false)\
+---@return function redraw A function to call to update the progress of the bar, taking a number from 0.0 to 1.0\
+function PrimeUI.progressBar(win, x, y, width, fgColor, bgColor, useShade)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    fgColor = expect(5, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(6, bgColor, \"number\", \"nil\") or colors.black\
+    expect(7, useShade, \"boolean\", \"nil\")\
+    local function redraw(progress)\
+        expect(1, progress, \"number\")\
+        if progress < 0 or progress > 1 then error(\"bad argument #1 (value out of range)\", 2) end\
+        -- Draw the active part of the bar.\
+        win.setCursorPos(x, y)\
+        win.setBackgroundColor(bgColor)\
+        win.setBackgroundColor(fgColor)\
+        win.write((\" \"):rep(math.floor(progress * width)))\
+        -- Draw the inactive part of the bar, using shade if desired.\
+        win.setBackgroundColor(bgColor)\
+        win.setTextColor(fgColor)\
+        win.write((useShade and \"\\x7F\" or \" \"):rep(width - math.floor(progress * width)))\
+    end\
+    redraw(0)\
+    return redraw\
+end\
+\
+--component 14, scrollBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a scrollable window, which allows drawing large content in a small area.\
+---@param win window The parent window of the scroll box\
+---@param x number The X position of the box\
+---@param y number The Y position of the box\
+---@param width number The width of the box\
+---@param height number The height of the outer box\
+---@param innerHeight number The height of the inner scroll area\
+---@param allowArrowKeys boolean|nil Whether to allow arrow keys to scroll the box (defaults to true)\
+---@param showScrollIndicators boolean|nil Whether to show arrow indicators on the right side when scrolling is available, which reduces the inner width by 1 (defaults to false)\
+---@param fgColor number|nil The color of scroll indicators (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+---@return window inner The inner window to draw inside\
+function PrimeUI.scrollBox(win, x, y, width, height, innerHeight, allowArrowKeys, showScrollIndicators, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, height, \"number\")\
+    expect(6, innerHeight, \"number\")\
+    expect(7, allowArrowKeys, \"boolean\", \"nil\")\
+    expect(8, showScrollIndicators, \"boolean\", \"nil\")\
+    fgColor = expect(9, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(10, bgColor, \"number\", \"nil\") or colors.black\
+    if allowArrowKeys == nil then allowArrowKeys = true end\
+    -- Create the outer container box.\
+    local outer = window.create(win == term and term.current() or win, x, y, width, height)\
+    outer.setBackgroundColor(bgColor)\
+    outer.clear()\
+    -- Create the inner scrolling box.\
+    local inner = window.create(outer, 1, 1, width - (showScrollIndicators and 1 or 0), innerHeight)\
+    inner.setBackgroundColor(bgColor)\
+    inner.clear()\
+    -- Draw scroll indicators if desired.\
+    if showScrollIndicators then\
+        outer.setBackgroundColor(bgColor)\
+        outer.setTextColor(fgColor)\
+        outer.setCursorPos(width, height)\
+        outer.write(innerHeight > height and \"\\31\" or \" \")\
+    end\
+    -- Get the absolute position of the window.\
+    x, y = PrimeUI.getWindowPos(win, x, y)\
+    -- Add the scroll handler.\
+    PrimeUI.addTask(function()\
+        local scrollPos = 1\
+        while true do\
+            -- Wait for next event.\
+            local ev = table.pack(os.pullEvent())\
+            -- Update inner height in case it changed.\
+            innerHeight = select(2, inner.getSize())\
+            -- Check for scroll events and set direction.\
+            local dir\
+            if ev[1] == \"key\" and allowArrowKeys then\
+                if ev[2] == keys.up then dir = -1\
+                elseif ev[2] == keys.down then dir = 1 end\
+            elseif ev[1] == \"mouse_scroll\" and ev[3] >= x and ev[3] < x + width and ev[4] >= y and ev[4] < y + height then\
+                dir = ev[2]\
+            end\
+            -- If there's a scroll event, move the window vertically.\
+            if dir and (scrollPos + dir >= 1 and scrollPos + dir <= innerHeight - height) then\
+                scrollPos = scrollPos + dir\
+                inner.reposition(1, 2 - scrollPos)\
+            end\
+            -- Redraw scroll indicators if desired.\
+            if showScrollIndicators then\
+                outer.setBackgroundColor(bgColor)\
+                outer.setTextColor(fgColor)\
+                outer.setCursorPos(width, 1)\
+                outer.write(scrollPos > 1 and \"\\30\" or \" \")\
+                outer.setCursorPos(width, height)\
+                outer.write(scrollPos < innerHeight - height and \"\\31\" or \" \")\
+            end\
+        end\
+    end)\
+    return inner\
+end\
+--component 15, selectionBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a list of entries that can each be selected.\
+---@param win window The window to draw on\
+---@param x number The X coordinate of the inside of the box\
+---@param y number The Y coordinate of the inside of the box\
+---@param width number The width of the inner box\
+---@param height number The height of the inner box\
+---@param entries string[] A list of entries to show, where the value is whether the item is pre-selected (or `\"R\"` for required/forced selected)\
+---@param action function|string A function or `run` event that's called when a selection is made\
+---@param selectChangeAction function|string|nil A function or `run` event that's called when the current selection is changed\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+function PrimeUI.selectionBox(win, x, y, width, height, entries, action, selectChangeAction, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, height, \"number\")\
+    expect(6, entries, \"table\")\
+    expect(7, action, \"function\", \"string\")\
+    expect(8, selectChangeAction, \"function\", \"string\", \"nil\")\
+    fgColor = expect(9, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(10, bgColor, \"number\", \"nil\") or colors.black\
+    -- Create container window.\
+    local entrywin = window.create(win, x, y, width - 1, height)\
+    local selection, scroll = 1, 1\
+    -- Create a function to redraw the entries on screen.\
+    local function drawEntries()\
+        -- Clear and set invisible for performance.\
+        entrywin.setVisible(false)\
+        entrywin.setBackgroundColor(bgColor)\
+        entrywin.clear()\
+        -- Draw each entry in the scrolled region.\
+        for i = scroll, scroll + height - 1 do\
+            -- Get the entry; stop if there's no more.\
+            local e = entries[i]\
+            if not e then break end\
+            -- Set the colors: invert if selected.\
+            entrywin.setCursorPos(2, i - scroll + 1)\
+            if i == selection then\
+                entrywin.setBackgroundColor(fgColor)\
+                entrywin.setTextColor(bgColor)\
+            else\
+                entrywin.setBackgroundColor(bgColor)\
+                entrywin.setTextColor(fgColor)\
+            end\
+            -- Draw the selection.\
+            entrywin.clearLine()\
+            entrywin.write(#e > width - 1 and e:sub(1, width - 4) .. \"...\" or e)\
+        end\
+        -- Draw scroll arrows.\
+        entrywin.setCursorPos(width, 1)\
+        entrywin.write(scroll > 1 and \"\\30\" or \" \")\
+        entrywin.setCursorPos(width, height)\
+        entrywin.write(scroll < #entries - height + 1 and \"\\31\" or \" \")\
+        -- Send updates to the screen.\
+        entrywin.setVisible(true)\
+    end\
+    -- Draw first screen.\
+    drawEntries()\
+    -- Add a task for selection keys.\
+    PrimeUI.addTask(function()\
+        while true do\
+            local _, key = os.pullEvent(\"key\")\
+            if key == keys.down and selection < #entries then\
+                -- Move selection down.\
+                selection = selection + 1\
+                if selection > scroll + height - 1 then scroll = scroll + 1 end\
+                -- Send action if necessary.\
+                if type(selectChangeAction) == \"string\" then PrimeUI.resolve(\"selectionBox\", selectChangeAction, selection)\
+                elseif selectChangeAction then selectChangeAction(selection) end\
+                -- Redraw screen.\
+                drawEntries()\
+            elseif key == keys.up and selection > 1 then\
+                -- Move selection up.\
+                selection = selection - 1\
+                if selection < scroll then scroll = scroll - 1 end\
+                -- Send action if necessary.\
+                if type(selectChangeAction) == \"string\" then PrimeUI.resolve(\"selectionBox\", selectChangeAction, selection)\
+                elseif selectChangeAction then selectChangeAction(selection) end\
+                -- Redraw screen.\
+                drawEntries()\
+            elseif key == keys.enter then\
+                -- Select the entry: send the action.\
+                if type(action) == \"string\" then PrimeUI.resolve(\"selectionBox\", action, entries[selection])\
+                else action(entries[selection]) end\
+            end\
+        end\
+    end)\
+end\
+--component 16, textBox\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Creates a text box that wraps text and can have its text modified later.\
+---@param win window The parent window of the text box\
+---@param x number The X position of the box\
+---@param y number The Y position of the box\
+---@param width number The width of the box\
+---@param height number The height of the box\
+---@param text string The initial text to draw\
+---@param fgColor color|nil The color of the text (defaults to white)\
+---@param bgColor color|nil The color of the background (defaults to black)\
+---@return function redraw A function to redraw the window with new contents\
+function PrimeUI.textBox(win, x, y, width, height, text, fgColor, bgColor)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, width, \"number\")\
+    expect(5, height, \"number\")\
+    expect(6, text, \"string\")\
+    fgColor = expect(7, fgColor, \"number\", \"nil\") or colors.white\
+    bgColor = expect(8, bgColor, \"number\", \"nil\") or colors.black\
+    -- Create the box window.\
+    local box = window.create(win, x, y, width, height)\
+    -- Override box.getSize to make print not scroll.\
+    function box.getSize()\
+        return width, math.huge\
+    end\
+    -- Define a function to redraw with.\
+    local function redraw(_text)\
+        expect(1, _text, \"string\")\
+        -- Set window parameters.\
+        box.setBackgroundColor(bgColor)\
+        box.setTextColor(fgColor)\
+        box.clear()\
+        box.setCursorPos(1, 1)\
+        -- Redirect and draw with `print`.\
+        local old = term.redirect(box)\
+        print(_text)\
+        term.redirect(old)\
+    end\
+    redraw(text)\
+    return redraw\
+end\
+--component 17, timeout\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+\
+--- Runs a function or action after the specified time period, with optional canceling.\
+---@param time number The amount of time to wait for, in seconds\
+---@param action function|string The function to call when the timer completes, or a `run` event to send\
+---@return function cancel A function to cancel the timer\
+function PrimeUI.timeout(time, action)\
+    expect(1, time, \"number\")\
+    expect(2, action, \"function\", \"string\")\
+    -- Start the timer.\
+    local timer = os.startTimer(time)\
+    -- Add a task to wait for the timer.\
+    PrimeUI.addTask(function()\
+        while true do\
+            -- Wait for a timer event.\
+            local _, tm = os.pullEvent(\"timer\")\
+            if tm == timer then\
+                -- Fire the timer action.\
+                if type(action) == \"string\" then PrimeUI.resolve(\"timeout\", action)\
+                else action() end\
+            end\
+        end\
+    end)\
+    -- Return a function to cancel the timer.\
+    return function() os.cancelTimer(timer) end\
+end\
+--component 18, drawNft\
+ -- DO NOT COPY THIS LINE\
+ -- DO NOT COPY THIS LINE\
+-- Start copying below this line. --\
+local nft = require \"cc.image.nft\"\
+\
+--- Draws a NFT-formatted image to the screen.\
+---@param win window The window to draw on\
+---@param x number The X position of the top left corner of the image\
+---@param y number The Y position of the top left corner of the image\
+---@param data string|table The path to the image to load, or the image data itself\
+function PrimeUI.drawNFT(win, x, y, data)\
+    expect(1, win, \"table\")\
+    expect(2, x, \"number\")\
+    expect(3, y, \"number\")\
+    expect(4, data, \"string\", \"table\")\
+    -- Load the image file if a string was passed using nft.load.\
+    if type(data) == \"string\" then\
+        data = assert(nft.load(\"data/example.nft\"), \"File is not a valid NFT file\")\
+    end\
+    nft.draw(data, x, y , win)\
+end\
+\
+return PrimeUI",
+      },
+    },
+    F = {},
+  },
+}
